@@ -1,1 +1,5 @@
+/.gitattributes
+/.vscode
 /node_modules
+/coverage
+coverage.json

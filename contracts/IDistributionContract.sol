@@ -4,28 +4,49 @@ pragma solidity ^0.8.9;
 
 interface IDistributionContract {
 
-    //Should transfer tokens from owner to distribution contract
-    //Can be called only by the owner
-    function deposit(uint256 amount) external returns (bool);
+    /**
+     * @dev Transfers tokens from owner to distribution contract.
+     * @param amount Amount of reward token.
+     */
+    function deposit(uint256 amount) external;
 
-    //Rewards should be increased for the beneficiary.
-    //Can be called only by the owner
-    function addBeneficiaries(address[] memory beneficiaries, uint256[] memory amounts) external returns (bool);
-    function addBeneficiary(address beneficiary, uint256 amount) external returns (bool);
+    /**
+     * @dev Іncreases rewards for beneficiaries.
+     * @param beneficiaries Array of addresses of beneficiaries.
+     * @param amounts Array of reward token amounts that will be added to the addresses of beneficiaries.
+     */
+    function addBeneficiaries(address[] calldata beneficiaries, uint256[] calldata amounts) external;
 
-    //Should decrease the amount of rewards for a beneficiary.
-    //Can be called only by the owner
-    function decreaseReward(address beneficiary, uint256 amount) external returns (bool);
+    /**
+     * @dev Іncreases reward for the beneficiary.
+     * @param beneficiary Beneficiary address.
+     * @param amount Amount of reward tokens that will be added to the beneficiary address.
+     */
+    function addBeneficiary(address beneficiary, uint256 amount) external;
 
-    //Should transfer amount of reward tokens back to the owner.
-    //Can be called only by the owner
-    function emergencyWithdraw(uint256 amount) external returns (bool);
+    /**
+     * @dev Decreases rewards for the beneficiary.
+     * @param beneficiary Beneficiary address.
+     * @param amount Amount of reward tokens that will be removed from the beneficiary's address.
+     */
+    function decreaseReward(address beneficiary, uint256 amount) external;
 
-    //Should lock/unlock rewards for beneficiaries?
-    //Can be called only by the owner
-    function lockRewards(bool lock) external returns (bool);
+    /**
+     * @dev Transfers the amount of reward tokens back to the owner.
+     * @param amount Amount of reward tokens.
+     */
+    function emergencyWithdraw(uint256 amount) external;
 
-    //Should transfer reward tokens to beneficiary. Without parameters.
-    function claim() external returns (bool);
+    /**
+     * @dev Lock/unlock rewards for beneficiaries.
+     * @param lock lock/unlock rewards payment permit.
+     */
+    function lockRewards(bool lock) external;
+
+    /**
+     * @dev Transfers reward tokens to beneficiary.
+     * Without parameters.
+     */
+    function claim() external;
 
 }
