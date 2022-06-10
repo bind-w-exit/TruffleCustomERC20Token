@@ -143,7 +143,7 @@ contract DistributionContract is IDistributionContract, Ownable {
      */
     function claim() external {
         require(_rewardsIsLocked == false, "Rewards for all beneficiaries has locked");
-        require(_balances[msg.sender] > 0, "There are no reward tokens in your address")
+        require(_balances[msg.sender] > 0, "There are no reward tokens in your address");
         require(_totalSupply >= _balances[msg.sender], "Not enough reward tokens in the contract total supply to withdraw them");
 
         uint256 totalSupplyBefore = _totalSupply;
