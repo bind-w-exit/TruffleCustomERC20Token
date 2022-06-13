@@ -317,9 +317,7 @@ contract("DistributionContract", function(accounts) {
             });
 
             it("shouldn't transfer tokens to beneficiary if rewards for all beneficiaries has locked", async () => {
-                await distributionContract.addBeneficiary(user1, amount); //this method has be tested in "Owner Phase Test Cases"
-                // userBalance = await distributionContract.balanceOf(user1);
-                // userBalance.should.be.bignumber.equal(amount);
+                await distributionContract.addBeneficiary(user1, amount);
 
                 await distributionContract.lockRewards(true);
                 await expectRevert(
@@ -337,9 +335,6 @@ contract("DistributionContract", function(accounts) {
                         amount: amount
                     }
                 );
-                
-                // userBalance = await tevaToken.balanceOf(user1);
-                // userBalance.should.be.bignumber.equal(amount);
             });
 
             it("shouldn't transfer tokens to beneficiary if there are no reward tokens at this addresss", async () => {
@@ -358,9 +353,6 @@ contract("DistributionContract", function(accounts) {
                         amount: amount
                     }
                 );
-                
-                // userBalance = await tevaToken.balanceOf(user1);
-                // userBalance.should.be.bignumber.equal(amount);
             });
 
             it("shouldn't transfer tokens to beneficiary if not enough reward tokens in the contract total supply to withdraw them", async () => {
@@ -383,9 +375,6 @@ contract("DistributionContract", function(accounts) {
                         amount: amount
                     }
                 );
-                
-                // userBalance = await tevaToken.balanceOf(user1);
-                // userBalance.should.be.bignumber.equal(amount);
             });
 
 
