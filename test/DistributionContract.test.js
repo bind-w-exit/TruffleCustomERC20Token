@@ -1,7 +1,5 @@
 const {
     BN,
-    time,
-    expect,
     expectEvent,
     constants,
     expectRevert,
@@ -154,6 +152,20 @@ contract("DistributionContract", function(accounts) {
             });
 
             //decreaseReward method tests 
+            it("Should decrease rewards for a beneficiary", async () => {
+                await distributionContract.addBeneficiary(user1, amount);
+                receipt = await distributionContract.decreaseReward(user1, amount);
+                expectEvent(
+                    receipt,
+                    "BeneficiaryBalanceChanged",
+                    {
+                        beneficiary: user1,
+                        balanceBefore: amount,
+                        balanceAfter: zeroAmount
+                    }
+                );
+            }); 
+
             it("shouldn't decrease reward for beneficiary by not the current owner", async () => {
                 await expectRevert(
                     distributionContract.decreaseReward(user2, amount, { from: user1 }),
@@ -205,6 +217,26 @@ contract("DistributionContract", function(accounts) {
             });
        
             //lockRewards method tests 
+            it("Should lock/unlock rewards for beneficiaries", async () => {
+                receipt = await distributionContract.lockRewards(true);
+                expectEvent(
+                    receipt,
+                    "LockRewards",
+                    {
+                        isLocked: true
+                    }
+                );
+
+                receipt = await distributionContract.lockRewards(false);
+                expectEvent(
+                    receipt,
+                    "LockRewards",
+                    {
+                        isLocked: false
+                    }
+                );
+            });
+
             it("shouldn't lock/unlock rewards for beneficiaries by a not the current owner", async () => {
                 await expectRevert(
                     distributionContract.lockRewards(true, { from: user1 }),
@@ -237,7 +269,7 @@ contract("DistributionContract", function(accounts) {
             });
         });
 
-        describe("Withdraw Phase Test Cases", function () {
+        describe("Withdraw Phase Test Cases (Users and owner)", function () {
 
             before(async function () {
                 await tevaToken.mint(deployer, amount);
@@ -250,8 +282,26 @@ contract("DistributionContract", function(accounts) {
                 await snapshotC.restore(); 
             });
 
-            it("should transfer tokens to beneficiary", async() => {
+            it("Should transfer amount of reward tokens back to the owner", async () => {
+                receipt = await distributionContract.emergencyWithdraw(amount);
+                expectEvent(
+                    receipt,
+                    "EmergencyWithdraw",
+                    {
+                        to: deployer,
+                        amount: amount
+                    }
+                );
+
+                userBalance = await tevaToken.balanceOf(deployer);
+                userBalance.should.be.bignumber.equal(amount);
+            });
+
+            it("should transfer tokens to beneficiary", async () => {
                 await distributionContract.addBeneficiary(user1, amount); //this method has be tested in "Owner Phase Test Cases"
+                userBalance = await distributionContract.balanceOf(user1);
+                userBalance.should.be.bignumber.equal(amount);
+
                 receipt = await distributionContract.claim({from: user1});
                 expectEvent(
                     receipt,
@@ -261,82 +311,84 @@ contract("DistributionContract", function(accounts) {
                         amount: amount
                     }
                 );
-
-                //await tevaToken.balanceOf(user1).should.eventually.be.bignumber.equal(amount);
+                
+                userBalance = await tevaToken.balanceOf(user1);
+                userBalance.should.be.bignumber.equal(amount);
             });
+
+            it("shouldn't transfer tokens to beneficiary if rewards for all beneficiaries has locked", async () => {
+                await distributionContract.addBeneficiary(user1, amount); //this method has be tested in "Owner Phase Test Cases"
+                // userBalance = await distributionContract.balanceOf(user1);
+                // userBalance.should.be.bignumber.equal(amount);
+
+                await distributionContract.lockRewards(true);
+                await expectRevert(
+                    distributionContract.claim({ from: user1 }),
+                    "Rewards for all beneficiaries has locked"
+                );
+
+                await distributionContract.lockRewards(false);
+                receipt = await distributionContract.claim({from: user1});
+                expectEvent(
+                    receipt,
+                    "Claim",
+                    {
+                        to: user1,
+                        amount: amount
+                    }
+                );
+                
+                // userBalance = await tevaToken.balanceOf(user1);
+                // userBalance.should.be.bignumber.equal(amount);
+            });
+
+            it("shouldn't transfer tokens to beneficiary if there are no reward tokens at this addresss", async () => {
+                await expectRevert(
+                    distributionContract.claim({ from: user1 }),
+                    "There are no reward tokens in your address"
+                );
+
+                await distributionContract.addBeneficiary(user1, amount);
+                receipt = await distributionContract.claim({from: user1});
+                expectEvent(
+                    receipt,
+                    "Claim",
+                    {
+                        to: user1,
+                        amount: amount
+                    }
+                );
+                
+                // userBalance = await tevaToken.balanceOf(user1);
+                // userBalance.should.be.bignumber.equal(amount);
+            });
+
+            it("shouldn't transfer tokens to beneficiary if not enough reward tokens in the contract total supply to withdraw them", async () => {
+                await distributionContract.addBeneficiary(user1, amount);
+                await distributionContract.emergencyWithdraw(amount);
+                
+                await expectRevert(
+                    distributionContract.claim({ from: user1 }),
+                    "Not enough reward tokens in the contract total supply to withdraw them"
+                );
+                
+                await tevaToken.approve(distributionContract.address, amount);
+                await distributionContract.deposit(amount);
+                receipt = await distributionContract.claim({from: user1});
+                expectEvent(
+                    receipt,
+                    "Claim",
+                    {
+                        to: user1,
+                        amount: amount
+                    }
+                );
+                
+                // userBalance = await tevaToken.balanceOf(user1);
+                // userBalance.should.be.bignumber.equal(amount);
+            });
+
 
         });
     });
 });
-
-// contract("Distribution contract", function(accounts) {
-
-//     it("Should transfer tokens from owner to distribution contract", async () => {
-//         await expect(tevaTokenInstance.balanceOf(distributionContractInstance.address)).to.eventually.be.a.bignumber.equal(new BN(SEND_TOKENS));
-//     });
-
-//     it("Should transfer reward tokens to beneficiary", async() => {
-//         await distributionContractInstance.addBeneficiary(recipient, SEND_TOKENS);
-//         await distributionContractInstance.claim({from: recipient});
-//         await expect(tevaTokenInstance.balanceOf(recipient)).to.eventually.be.a.bignumber.equal(new BN(SEND_TOKENS));
-//     });
-
-//     it("Should transfer reward tokens to beneficiaries", async() => {
-//         await distributionContractInstance.addBeneficiaries([recipient, anotherAccount], [SEND_TOKENS/2, SEND_TOKENS/2]);
-//         await distributionContractInstance.claim({from: recipient});
-//         await distributionContractInstance.claim({from: anotherAccount});
-//         await expect(tevaTokenInstance.balanceOf(recipient)).to.eventually.be.a.bignumber.equal(new BN(SEND_TOKENS/2));
-//         await expect(tevaTokenInstance.balanceOf(anotherAccount)).to.eventually.be.a.bignumber.equal(new BN(SEND_TOKENS/2));
-//     });
-
-//     it("Reduction of the amount of reward should not exceed the balance", async() => {
-//         await distributionContractInstance.addBeneficiary(recipient, SEND_TOKENS - 1);
-//         await expect(distributionContractInstance.decreaseReward(recipient, SEND_TOKENS)).to.eventually.be.rejected;
-//     });
-
-//     it("Should decrease the amount of rewards for a beneficiary", async() => {
-//         await distributionContractInstance.addBeneficiary(recipient, SEND_TOKENS);
-//         await expect(distributionContractInstance.decreaseReward(recipient, SEND_TOKENS)).to.eventually.be.fulfilled;
-//     });
-
-//     it("The amount of withdrawal of reward should not exceed the balance", async() => {
-//         await expect(distributionContractInstance.emergencyWithdraw(SEND_TOKENS + 1)).to.eventually.be.rejected;
-//     });
-
-//     it("Should transfer amount of reward tokens back to the owner", async() => {
-//         await expect(distributionContractInstance.emergencyWithdraw(SEND_TOKENS)).to.eventually.be.fulfilled;
-//     });
-
-//     it("Should lock/unlock rewards for beneficiaries", async() => {
-//         await distributionContractInstance.addBeneficiary(recipient, SEND_TOKENS);
-    
-//         await distributionContractInstance.lockRewards(true);
-//         await expect(distributionContractInstance.claim({from: recipient})).to.eventually.be.rejected;
-
-//         await distributionContractInstance.lockRewards(false);
-//         await expect(distributionContractInstance.claim({from: recipient})).to.eventually.be.fulfilled;
-//     });
-
-//     it("Not enough tokens in the contract", async() => {
-//         await distributionContractInstance.addBeneficiaries([recipient, anotherAccount], [SEND_TOKENS/2, SEND_TOKENS]);
-//         await expect(distributionContractInstance.claim({from: recipient})).to.eventually.be.fulfilled;
-//         await expect(distributionContractInstance.claim({from: anotherAccount})).to.eventually.be.rejected;
-//     })
-
-//     it("Only the owner can call the functions", async() => {
-//         await tevaTokenInstance.mint(recipient, SEND_TOKENS);
-//         await expect(this.distributionContractInstance.deposit(SEND_TOKENS, {from: recipient})).to.eventually.be.rejected;
-
-
-//         await expect(distributionContractInstance.addBeneficiary(anotherAccount, SEND_TOKENS, {from: recipient})).to.eventually.be.rejected;
-//         await expect(distributionContractInstance.addBeneficiaries([anotherAccount], [SEND_TOKENS], {from: recipient})).to.eventually.be.rejected;
-//         await expect(distributionContractInstance.addBeneficiaries([recipient, anotherAccount], [SEND_TOKENS/2, SEND_TOKENS/2], {from: recipient})).to.eventually.be.rejected;
-
-//         await expect(distributionContractInstance.decreaseReward(anotherAccount, SEND_TOKENS, {from: recipient})).to.eventually.be.rejected;
-
-//         await expect(distributionContractInstance.emergencyWithdraw(SEND_TOKENS, {from: recipient})).to.eventually.be.rejected;
-
-//         await expect(distributionContractInstance.lockRewards(true, {from: recipient})).to.eventually.be.rejected;
-//         await expect(distributionContractInstance.lockRewards(false, {from: recipient})).to.eventually.be.rejected;
-//     });
-// });

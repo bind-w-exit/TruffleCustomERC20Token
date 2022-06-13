@@ -17,7 +17,7 @@ contract DistributionContract is IDistributionContract, Ownable {
 
     event BeneficiaryBalanceChanged(address beneficiary, uint256 balanceBefore, uint256 balanceAfter);
     event TotalSupplyChanged(uint256 totalSupplyBefore, uint256 TotalSuppleAfter);
-    event EmergencyWithdraw(address from, uint256 amount);
+    event EmergencyWithdraw(address to, uint256 amount);
     event Deposit(address from, uint256 amount);
     event Claim(address to, uint256 amount);
     event LockRewards(bool isLocked);
@@ -116,6 +116,7 @@ contract DistributionContract is IDistributionContract, Ownable {
         require(_totalSupply >= amount, "Withdraw amount of reward tokens exceeds total supply");
 
         uint256 totalSupplyBefore = _totalSupply;
+        _totalSupply -= amount;
         _token.safeTransfer(msg.sender, amount);
         emit EmergencyWithdraw(msg.sender, amount);
         emit TotalSupplyChanged(totalSupplyBefore, _totalSupply);
@@ -147,10 +148,10 @@ contract DistributionContract is IDistributionContract, Ownable {
         require(_totalSupply >= _balances[msg.sender], "Not enough reward tokens in the contract total supply to withdraw them");
 
         uint256 totalSupplyBefore = _totalSupply;
-        uint amount = _balances[msg.sender];
-        _totalSupply -= _balances[msg.sender];
-        _balances[msg.sender] = 0;
-        _token.safeTransfer(msg.sender, _balances[msg.sender]);   
+        uint256 amount = _balances[msg.sender];
+        _totalSupply -= _balances[msg.sender];  
+        _balances[msg.sender] = 0;     
+        _token.safeTransfer(msg.sender, amount);  
         emit Claim(msg.sender, amount);  
         emit TotalSupplyChanged(totalSupplyBefore, _totalSupply);
     }
