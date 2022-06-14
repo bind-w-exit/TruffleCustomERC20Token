@@ -1,0 +1,8 @@
+/.gitattributes
+/.vscode
+/node_modules
+/coverage
+coverage.json
+/.coverage_contracts
+/.coverage_artifacts
+/build
