@@ -1,0 +1,300 @@
+PS C:\Users\12And\Desktop\solidity\TruffleCustomERC20Token> traffle migrate --network ropsten
+> Compiling @openzeppelin\contracts\utils\Address.sol
+> Compiling @openzeppelin\contracts\utils\Context.sol
+> Compiling .\contracts\DistributionContract.sol
+> Compiling .\contracts\IDistributionContract.sol
+> Compiling .\contracts\Migrations.sol
+> Compiling .\contracts\TevaToken.sol
+> Artifacts written to C:\Users\12And\Desktop\solidity\TruffleCustomERC20Token\build\contracts
+> Compiled successfully using:
+   - solc: 0.8.14+commit.80d49f37.Emscripten.clang
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'ropsten-fork'
+> Network id:      3
+> Block gas limit: 30000000 (0x1c9c380)
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > block number:        12392009
+   > block timestamp:     1655208011
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             0.982507513951832864
+   > gas used:            250154 (0x3d12a)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000625385001751078 ETH
+
+   -------------------------------------
+   > Total cost:     0.000625385001751078 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'TevaToken'
+   ---------------------
+   > block number:        12392011
+   > block timestamp:     1655208014
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             0.97810995893951971
+   > gas used:            1713109 (0x1a23d5)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004282772511991763 ETH
+
+
+   Deploying 'DistributionContract'
+   --------------------------------
+   > block number:        12392012
+   > block timestamp:     1655208016
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             0.972628136424170607
+   > gas used:            2192729 (0x217559)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005481822515349103 ETH
+
+   -------------------------------------
+   > Total cost:     0.009764595027340866 ETH
+
+Summary
+=======
+> Total deployments:   3
+> Final cost:          0.010389980029091944 ETH
+
+
+
+
+Starting migrations...
+======================
+> Network name:    'ropsten'
+> Network id:      3
+> Block gas limit: 30000000 (0x1c9c380)
+
+
+1_initial_migration.js
+======================
+
+   Deploying 'Migrations'
+   ----------------------
+   > transaction hash:    0xc81fda15bf74713ee2ef5940578e6ea7bad25b051de85b688e984f365fe802ed
+   > Blocks: 0            Seconds: 4
+   > contract address:    0xC522f7F62eD06eF79758f1e1A523C9352db66FE6
+   > block number:        12392014
+   > block timestamp:     1655208024
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             0.982507513951832864
+   > gas used:            250154 (0x3d12a)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.000625385001751078 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 12392015)
+   > confirmation number: 2 (block: 12392016)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.000625385001751078 ETH
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'TevaToken'
+   ---------------------
+   > transaction hash:    0xdd524141457ca66607b692990b358a728942618ae19bdfcd0fc1059c5599081b
+   > Blocks: 1            Seconds: 8
+   > contract address:    0x9ea5019B25b743B418A887e1d13f3dee0DC170A7
+   > block number:        12392019
+   > block timestamp:     1655208084
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             0.978109958937760688
+   > gas used:            1713109 (0x1a23d5)
+   > gas price:           2.500000008 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004282772513704872 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 12392020)
+   > confirmation number: 2 (block: 12392021)
+
+   Deploying 'DistributionContract'
+   --------------------------------
+   > transaction hash:    0x5e2145f27a25da64242ef63f812564ebef2c896a44ddaaf3ca2fea2d19db3f02
+   > Blocks: 1            Seconds: 16
+   > contract address:    0xb1e9C19B9Db742B3bB1848Be3f7dB547C5F2B9C5
+   > block number:        12392023
+   > block timestamp:     1655208132
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             0.972628136420218856
+   > gas used:            2192729 (0x217559)
+   > gas price:           2.500000008 gwei
+   > value sent:          0 ETH
+   > total cost:          0.005481822517541832 ETH
+
+   Pausing for 2 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 12392024)
+   > confirmation number: 2 (block: 12392025)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.009764595031246704 ETH
+
+Summary
+=======
+> Total deployments:   3
+> Final cost:          0.010389980032997782 ETH
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+                                          After final fix
+////////////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+PS C:\Users\12And\Desktop\solidity\TruffleCustomERC20Token> truffle migrate --network infura_ropsten
+
+Compiling your contracts...
+===========================
+> Compiling @openzeppelin\contracts\access\Ownable.sol
+> Compiling @openzeppelin\contracts\token\ERC20\ERC20.sol
+> Compiling @openzeppelin\contracts\token\ERC20\IERC20.sol
+> Compiling @openzeppelin\contracts\token\ERC20\extensions\IERC20Metadata.sol
+> Compiling @openzeppelin\contracts\token\ERC20\extensions\draft-IERC20Permit.sol
+> Compiling @openzeppelin\contracts\token\ERC20\utils\SafeERC20.sol
+> Compiling @openzeppelin\contracts\utils\Address.sol
+> Compiling @openzeppelin\contracts\utils\Context.sol
+> Compiling .\contracts\DistributionContract.sol
+> Compiling .\contracts\Migrations.sol
+> Compiling .\contracts\TevaToken.sol
+> Compiling .\contracts\interfaces\IDistributionContract.sol
+> Artifacts written to C:\Users\12And\Desktop\solidity\TruffleCustomERC20Token\build\contracts
+> Compiled successfully using:
+   - solc: 0.8.14+commit.80d49f37.Emscripten.clang
+
+
+Migrations dry-run (simulation)
+===============================
+> Network name:    'infura_ropsten-fork'
+> Network id:      3
+> Block gas limit: 30000000 (0x1c9c380)
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'TevaToken'
+   ---------------------
+   > block number:        12727204
+   > block timestamp:     1659710447
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             4.729603412467462544
+   > gas used:            1665781 (0x196af5)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004164452511660467 ETH
+
+
+   Deploying 'DistributionContract'
+   --------------------------------
+   > block number:        12727205
+   > block timestamp:     1659710449
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             4.724679889953676681
+   > gas used:            1969409 (0x1e0d01)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004923522513785863 ETH
+
+   -------------------------------------
+   > Total cost:     0.00908797502544633 ETH
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.00908797502544633 ETH
+
+
+
+
+Starting migrations...
+======================
+> Network name:    'infura_ropsten'
+> Network id:      3
+> Block gas limit: 30000000 (0x1c9c380)
+
+
+2_deploy_contracts.js
+=====================
+
+   Deploying 'TevaToken'
+   ---------------------
+   > transaction hash:    0x6eb0fb779556674ece0d9c358c9281cabb65c3b81032ba8924220ec01da05552
+   > Blocks: 1            Seconds: 16
+   > contract address:    0xb27F7C144029f634e6433C086af9471e6979A9a9
+   > block number:        12727209
+   > block timestamp:     1659710484
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             4.729603412467462544
+   > gas used:            1665781 (0x196af5)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004164452511660467 ETH
+
+   Pausing for 1 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 12727210)
+
+   Deploying 'DistributionContract'
+   --------------------------------
+   > transaction hash:    0x3598b71c319ff10fcd3ba89dabbd437bfabb6df5f2fa14a4c9924332a2936a6f
+   > Blocks: 2            Seconds: 17
+   > contract address:    0x3628e489493E1D83B45f9372Ea05f3909BDBA060
+   > block number:        12727212
+   > block timestamp:     1659710520
+   > account:             0x1388c300539f6e1aDa9DF4DD3aE2129a56F079a5
+   > balance:             4.724679889953676681
+   > gas used:            1969409 (0x1e0d01)
+   > gas price:           2.500000007 gwei
+   > value sent:          0 ETH
+   > total cost:          0.004923522513785863 ETH
+
+   Pausing for 1 confirmations...
+
+   -------------------------------
+   > confirmation number: 1 (block: 12727213)
+   > Saving migration to chain.
+   > Saving artifacts
+   -------------------------------------
+   > Total cost:     0.00908797502544633 ETH
+
+Summary
+=======
+> Total deployments:   2
+> Final cost:          0.00908797502544633 ETH
+
+PS C:\Users\12And\Desktop\solidity\TruffleCustomERC20Token> truffle run verify TevaToken --network infura_ropsten
+Verifying TevaToken
+Pass - Verified: https://ropsten.etherscan.io/address/0xb27F7C144029f634e6433C086af9471e6979A9a9#code
+Successfully verified 1 contract(s).
+
+PS C:\Users\12And\Desktop\solidity\TruffleCustomERC20Token> truffle run verify DistributionContract --network infura_ropsten
+Verifying DistributionContract
+Pass - Verified: https://ropsten.etherscan.io/address/0x3628e489493E1D83B45f9372Ea05f3909BDBA060#code
+Successfully verified 1 contract(s).
